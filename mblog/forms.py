@@ -27,7 +27,8 @@ class EditForm(FlaskForm):
         return True
 
 class PostForm(FlaskForm):
-    post = StringField('post', validators=[DataRequired()])
+    title = StringField('Title', validators=[DataRequired()])
+    body = TextAreaField('Body', validators=[DataRequired()])
 
 class SearchForm(FlaskForm):
     search = StringField('search', validators=[DataRequired()])

@@ -22,13 +22,15 @@
 {#    <script src="{{ url_for('static', filename='js/moment.js') }}"></script>#}
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.js"></script>
 
+    {% block head %}
+    {% endblock %}
+
 </head>
 
 <body>
-
-    <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse fixed-top">
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+<div class="container-fluid">
+    <nav class="navbar navbar-light bg-faded rounded navbar-toggleable-md">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#containerNavbar" aria-controls="containerNavbar" aria-expanded="false" aria-label="Toggle navigation">            <span class="navbar-toggler-icon"></span>
         </button>
         <a class="navbar-brand" href="#">M-Blog</a>
 
@@ -42,26 +44,32 @@
                     <a class="nav-link" href="{{ url_for('user', nickname=g.user.nickname) }}">Your Profile</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('add_content') }}">Add Content</a>
+                </li>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('test_flash') }}">Test flash!</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
                 </li>
 
             </ul>
-            <form class="form-inline my-2 my-lg-0" action="{{ url_for('search') }}" method="post" name="search">
+            <form class="form-inline my-2 my-md-0" action="{{ url_for('search') }}" method="post" name="search">
                 {{ g.search_form.hidden_tag() }}
-                {{ g.search_form.search(size=20, class="btn btn-outline-success my-2 my-sm-0") }}
-                <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Search"> Search </form>
+                {{ g.search_form.search(class="form-control mr-sm-2") }}
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Search"> Search </button>
             </form>
                 {% endif %}
         </div>
     </nav>
 
-    <div class="container-fluid">
         {% include 'flash.html' %}
 
         {% block content %}
         {% endblock %}
 
-    </div>
+</div>
 
     <!-- jQuery first, then Tether, then Bootstrap JS. -->
 

@@ -18,9 +18,9 @@ class TestCase(unittest.TestCase):
         db.session.remove()
         db.drop_all()
 
-    def test_avator(self):
+    def test_avatar(self):
         u = User(nickname='john', email='john@example.com')
-        avatar = u.avator(128)
+        avatar = u.avatar(128)
         expected = 'http://www.gravatar.com/avatar/d4c74594d841139328695756648b6bd6'
         assert avatar[0:len(expected)] == expected
 
@@ -73,10 +73,10 @@ class TestCase(unittest.TestCase):
         db.session.add(u4)
         # make four posts
         utcnow = datetime.utcnow()
-        p1 = Post(body="post from john", author=u1, timestamp=utcnow + timedelta(seconds=1))
+        p1 = Post(topic='john topic', body="post from john", author=u1, timestamp=utcnow + timedelta(seconds=1))
         p2 = Post(body="post from susan", author=u2, timestamp=utcnow + timedelta(seconds=2))
         p3 = Post(body="post from mary", author=u3, timestamp=utcnow + timedelta(seconds=3))
-        p4 = Post(body="post from david", author=u4, timestamp=utcnow + timedelta(seconds=4))
+        p4 = Post(topic='davids topic', body="post from david", author=u4, timestamp=utcnow + timedelta(seconds=4))
         db.session.add(p1)
         db.session.add(p2)
         db.session.add(p3)

@@ -77,12 +77,15 @@ class User(db.Model):
     def followed_posts(self):
         return Post.query.join(followers, (followers.c.followed_id == Post.user_id)).filter(followers.c.follower_id == self.id).order_by(Post.timestamp.desc())
 
+    def sorted_post(self):
+        return self.posts.order_by(Post.timestamp.desc())
 
 class Post(db.Model):
     __searchable__ = ['body']
 
     id = db.Column(db.Integer, primary_key=True)
-    body = db.Column(db.String(140))
+    title = db.Column(db.String(140))
+    body = db.Column(db.Text)
     timestamp = db.Column(db.DateTime)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 

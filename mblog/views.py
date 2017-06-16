@@ -19,7 +19,7 @@ def index(page=1):
         db.session.commit()
         flash('Your post is now live!')
         return redirect(url_for('index'))
-    posts = g.user.followed_posts().paginate(page, POSTS_PER_PAGE, False)
+    posts = g.user.sorted_post().paginate(page, POSTS_PER_PAGE, False)
     return render_template('index.html',
                            title='Home',
                            form=form,
@@ -90,6 +90,7 @@ def user(nickname, page=1):
         flash('User %s not found.' % nickname)
         return redirect(url_for('index'))
     posts = user.posts.paginate(page, POSTS_PER_PAGE, False)
+    print(posts.items)
     return render_template('user.html', user=user, posts=posts)
 
 @app.route('/edit', methods=['GET', 'POST'])
@@ -172,6 +173,34 @@ def search_results(query):
                            query=query,
                            results=results)
 
+@app.route('/add_content', methods=['GET', 'POST'])
+@login_required
+def add_content():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(title=form.title.data, body=form.body.data, timestamp=datetime.utcnow(), author=g.user)
+        db.session.add(post)
+        db.session.commit()
+        flash('Your post is now live!')
+        return redirect(url_for('index'))
+    return render_template('add_post.html',
+                           title='Write a post',
+                           form=form)
+
+@app.route('/post/<int:post_id>', methods=['GET'])
+def single_post(post_id):
+    post = Post.query.filter_by(id=post_id).first()
+    return render_template('single_post.html', post=post)
+
+@app.route('/test/add_content', methods=['GET', 'POST'])
+@login_required
+def test_add_content():
+    return render_template('add_post_test.html')
+
+
+
+"""
+
 @app.route('/test/ajax', methods=['GET', 'POST'])
 def test_ajax():
     return render_template('test_ajax.html')
@@ -181,3 +210,212 @@ def test_ajax_rtn():
     return jsonify({
         'text': 'ajax test',
         'mainBody': 'main body stud goes here'})
+
+"""
+
+@app.route('/test/flash')
+def test_flash():
+    from random import randint
+    for i in range(3):
+        flash('Msg to test flash and random int: {}'.format(str(randint(1,50))))
+    return redirect(url_for('index'))
+
+@app.route('/test/markdown')
+def test_markdown():
+    text2="""        # (GitHub-Flavored) Markdown Editor
+
+        Basic useful feature list:
+
+        * Ctrl+S / Cmd+S to save the file
+        * Ctrl+Shift+S / Cmd+Shift+S to choose to save as Markdown or HTML
+        * Drag and drop a file into here to load it
+        * File contents are saved in the URL so you can share files
+
+
+        I'm no good at writing sample / filler text, so go write something yourself.
+
+        Look, a list!
+
+        * foo
+        * bar
+        * baz
+
+        And here's some code! :+1:
+
+        ```javascript
+        $(function(){
+        $('div').html('I am a div.');
+        });
+        ```
+
+        This is [on GitHub](https://github.com/jbt/markdown-editor) so let me know if I've b0rked it somewhere.
+
+
+        Props to Mr. Doob and his [code editor](http://mrdoob.com/projects/code-editor/), from which
+        the inspiration to this, and some handy implementation hints, came.
+
+        ### Stuff used to make this:
+
+        * [markdown-it](https://github.com/markdown-it/markdown-it) for Markdown parsing
+        * [CodeMirror](http://codemirror.net/) for the awesome syntax-highlighted editor
+        * [highlight.js](http://softwaremaniacs.org/soft/highlight/en/) for syntax highlighting in output code blocks
+        * [js-deflate](https://github.com/dankogai/js-deflate) for gzipping of data to make it fit in URLs
+"""  #Github type. Doesn't work with Misaka.
+    text= """An h1 header
+============
+
+Paragraphs are separated by a blank line.
+
+2nd paragraph. *Italic*, **bold**, and `monospace`. Itemized lists
+look like:
+
+  * this one
+  * that one
+  * the other one
+
+Note that --- not considering the asterisk --- the actual text
+content starts at 4-columns in.
+
+> Block quotes are
+> written like so.
+>
+> They can span multiple paragraphs,
+> if you like.
+
+Use 3 dashes for an em-dash. Use 2 dashes for ranges (ex., "it's all
+in chapters 12--14"). Three dots ... will be converted to an ellipsis.
+Unicode is supported. ☺
+
+
+
+An h2 header
+------------
+
+Here's a numbered list:
+
+ 1. first item
+ 2. second item
+ 3. third item
+
+Note again how the actual text starts at 4 columns in (4 characters
+from the left side). Here's a code sample:
+
+    # Let me re-iterate ...
+    for i in 1 .. 10 { do-something(i) }
+
+As you probably guessed, indented 4 spaces. By the way, instead of
+indenting the block, you can use delimited blocks, if you like:
+
+~~~
+define foobar() {
+    print "Welcome to flavor country!";
+}
+~~~
+
+(which makes copying & pasting easier). You can optionally mark the
+delimited block for Pandoc to syntax highlight it:
+
+~~~python
+import time
+# Quick, count to ten!
+for i in range(10):
+    # (but not *too* quick)
+    time.sleep(0.5)
+    print i
+~~~
+
+
+
+### An h3 header ###
+
+Now a nested list:
+
+ 1. First, get these ingredients:
+
+      * carrots
+      * celery
+      * lentils
+
+ 2. Boil some water.
+
+ 3. Dump everything in the pot and follow
+    this algorithm:
+
+        find wooden spoon
+        uncover pot
+        stir
+        cover pot
+        balance wooden spoon precariously on pot handle
+        wait 10 minutes
+        goto first step (or shut off burner when done)
+
+    Do not bump wooden spoon or it will fall.
+
+Notice again how text always lines up on 4-space indents (including
+that last line which continues item 3 above).
+
+Here's a link to [a website](http://foo.bar), to a [local
+doc](local-doc.html), and to a [section heading in the current
+doc](#an-h2-header). Here's a footnote [^1].
+
+[^1]: Footnote text goes here.
+
+Tables can look like this:
+
+size  material      color
+----  ------------  ------------
+9     leather       brown
+10    hemp canvas   natural
+11    glass         transparent
+
+Table: Shoes, their sizes, and what they're made of
+
+(The above is the caption for the table.) Pandoc also supports
+multi-line tables:
+
+--------  -----------------------
+keyword   text
+--------  -----------------------
+red       Sunsets, apples, and
+          other red or reddish
+          things.
+
+green     Leaves, grass, frogs
+          and other things it's
+          not easy being.
+--------  -----------------------
+
+A horizontal rule follows.
+
+***
+
+Here's a definition list:
+
+apples
+  : Good for making applesauce.
+oranges
+  : Citrus!
+tomatoes
+  : There's no "e" in tomatoe.
+
+Again, text is indented 4 spaces. (Put a blank line between each
+term/definition pair to spread things out more.)
+
+Here's a "line block":
+
+| Line one
+|   Line too
+| Line tree
+
+and images can be specified like so:
+
+![example image](example-image.jpg "An exemplary image")
+
+Inline math equations go in like so: $\omega = d\phi / dt$. Display
+math should get its own line and be put in in double-dollarsigns:
+
+$$I = \int \rho R^{2} dV$$
+
+And note that you can backslash-escape any punctuation characters
+which you wish to be displayed literally, ex.: \`foo\`, \*bar\*, etc."""
+    return render_template('test_markdown.html', text=text)

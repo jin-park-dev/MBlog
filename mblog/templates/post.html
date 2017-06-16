@@ -1,5 +1,6 @@
-<table>
-    <tr valign="top">
-        <td><img src="{{ post.author.avatar(50) }}"></td> <td><i>{{ post.author.nickname }} says: </i><br>{{ post.body }} <br> said {{ momentjs(post.timestamp).fromNow() }}</td>
-    </tr>
-</table>
+<div class="blog-post">
+    <a href="{{ url_for('single_post', post_id=post.id) }}"><h2 class="blog-post-title">{{ post.title }}</a></h2>
+    <p class="blog-post-meta">{{ momentjs(post.timestamp).format('LLLL') }} by <a href="{{ url_for('user', nickname=post.author.nickname) }}">{{ post.author.nickname }}</a></p>
+    {{ post.body |markdown }}
+    <hr>
+</div>
