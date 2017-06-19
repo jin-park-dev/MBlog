@@ -90,7 +90,6 @@ def user(nickname, page=1):
         flash('User %s not found.' % nickname)
         return redirect(url_for('index'))
     posts = user.posts.paginate(page, POSTS_PER_PAGE, False)
-    print(posts.items)
     return render_template('user.html', user=user, posts=posts)
 
 @app.route('/edit', methods=['GET', 'POST'])
@@ -417,5 +416,5 @@ math should get its own line and be put in in double-dollarsigns:
 $$I = \int \rho R^{2} dV$$
 
 And note that you can backslash-escape any punctuation characters
-which you wish to be displayed literally, ex.: \`foo\`, \*bar\*, etc."""
+which you wish to be displayed literally, ex.: \`foo\`, \*bar\*, etc.""" #This seems standard markdown. Works.
     return render_template('test_markdown.html', text=text)
