@@ -2,10 +2,8 @@
     <a href="{{ url_for('single_post', post_id=post.id) }}"><h2 class="blog-post-title">{{ post.title }}</a></h2>
     <p class="blog-post-meta">{{ momentjs(post.timestamp).format('LLLL') }} by <a href="{{ url_for('user', nickname=post.author.nickname) }}">{{ post.author.nickname }}</a></p>
 
-    <img src="{{ url_for('static', filename='upload/temp_img.png') }}" class="img-thumbnail rounded mx-auto d-block">
-    {{ post.body | markdown | truncate(1200) }}
+    <img src="{{ url_for('static', filename='upload/temp_img.png') }}" class="rounded mx-auto d-block">
 
-    <a href="{{ url_for('single_post', post_id=post.id) }}"><p>Read more</a></p>
-
+    {{ post.body | markdown }}
     <hr>
 </div>

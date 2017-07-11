@@ -7,6 +7,7 @@ from config import basedir, ADMINS, MAIL_SERVER, MAIL_PORT, MAIL_USERNAME, MAIL_
 from flask_mail import Mail
 from .momentjs import momentjs
 from flask_misaka import Misaka
+from flask_fileupload import FlaskFileUpload
 
 app = Flask(__name__)
 app.config.from_object('config')
@@ -23,6 +24,8 @@ mail = Mail(app)
 
 md = Misaka()
 md.init_app(app)
+
+ffu = FlaskFileUpload(app)
 
 from mblog import views, models
 

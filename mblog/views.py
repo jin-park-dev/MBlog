@@ -191,6 +191,40 @@ def single_post(post_id):
     post = Post.query.filter_by(id=post_id).first()
     return render_template('single_post.html', post=post)
 
+@app.route('/edit_post/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def edit_post(post_id):
+    post = Post.query.filter_by(id=post_id).first()
+    form = PostForm(obj=post)
+
+    """
+    if form.validate_on_submit():
+        post = Post(title=form.title.data, body=form.body.data)
+        db.session.commit()
+        return redirect(url_for('single_post', post_id=post_id))
+    """
+
+    if form.validate_on_submit():
+        form.populate_obj(post)
+        db.session.commit()
+        return redirect(url_for('single_post', post_id=post_id))
+
+    # else:
+    #     form.title.data = post.title
+    #     form.body.data = post.body
+    return render_template("edit_post.html", form=form)
+    # if form.validate_on_submit():
+
+
+
+
+
+
+
+
+
+
+
 @app.route('/test/add_content', methods=['GET', 'POST'])
 @login_required
 def test_add_content():
@@ -418,3 +452,29 @@ $$I = \int \rho R^{2} dV$$
 And note that you can backslash-escape any punctuation characters
 which you wish to be displayed literally, ex.: \`foo\`, \*bar\*, etc.""" #This seems standard markdown. Works.
     return render_template('test_markdown.html', text=text)
+
+@app.route('/test/upload')
+def test_upload():
+    # return redirect("/fileupload/")
+    return redirect('/upload')
+
+@app.route('/test/img')
+def test_img():
+    from jinja2 import Markup
+    from jinja2 import escape
+    from jinja2 import Template
+
+    #img = Markup("<a href={{ url_for('index') }}>Home</a>") #"{{ url_for('static', filename='upload/bmi.png') }}"
+
+    #img = Markup("<a href={{ url_for('index') }}>Home</a>") #"{{ url_for('static', filename='upload/bmi.png') }}"
+
+    #img = Markup.escape("<a href={{ url_for('index') }}>Home</a>")
+
+
+    url=url_for('index')
+    print(url)
+    img = Markup(Template("<a href={{ '{}' }}>Home</a>".format(url)).render())
+
+    # img = "Hi"
+    return render_template('test_img.html', img=img)
+
