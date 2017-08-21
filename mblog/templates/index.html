@@ -2,12 +2,80 @@
 
 
 {% block content %}
-        <h1>Hi, {{ g.user.nickname }}</h1>
-        <!-- posts is a Paginate object -->
-        {% for post in posts.items %}
-            <div class="col-12">{% include 'post.html' %}</div>
-        {% endfor %}
+    <section class="section-site-info">
+        <div class="text-center blog-header">
+{#            <h1 class="blog-title">Hi, {{ g.user.nickname }}</h1>#}
+            <h1 class="blog-title">Welcome to my blog</h1>
+            <p class="blog-description">My journey of programming and dancing.</p>
+        </div>
+    </section>
 
-        {% if posts.has_prev %}<a href="{{ url_for('index', page=posts.prev_num) }}">&lt;&lt; Newer posts</a>{% else %}&lt;&lt; Newer posts {% endif %} |
-        {% if posts.has_next %}<a href="{{ url_for('index', page=posts.next_num) }}">Older posts &gt;&gt;</a>{% else %}Older posts &gt;&gt;{% endif %}
+    <hr> <!-- improve later. Maybe background image in section instead -->
+
+    <div class=""> <!-- Improve with section later? -->
+        <div class = "row">
+            <div class="col-sm-8">
+                <!-- posts is a Paginate object -->
+                {% for post in posts.items %}
+                    <div class="">{% include 'post.html' %}</div>
+                {% endfor %}
+
+
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+
+                        {% if posts.has_prev %}<li class="page-item"><a class="page-link" href="{{ url_for('index', page=1) }}">&laquo;&laquo;&laquo; 1st Page</a></li>
+                        {% else %}<li class="page-item disabled"><a class="page-link">&laquo; Previous</a></li>{% endif %}
+                        {% if posts.has_prev %}<li class="page-item"><a class="page-link" href="{{ url_for('index', page=posts.prev_num) }}">&laquo; Previous</a></li>
+                        {% else %}<li class="page-item disabled"><a class="page-link">&laquo; Previous</a></li>{% endif %}
+
+                        <li class="disabled page-item"><a class="page-link" href="#">{{ posts.page }} / {{ posts.pages }}</a></li>
+{#                        <li class="disabled page-item"><a class="page-link" href="#">x</a></li>#}
+
+                        {% if posts.has_next %}<li class="page-item"><a class="page-link" href="{{ url_for('index', page=posts.next_num) }}">Next &raquo;</a></li>
+                        {% else %}<li class="page-item disabled"><a class="page-link">Next &raquo;</a></li>{% endif %}
+
+                        <li class="page-item"><a class="page-link" href="{{ url_for('index', page=posts.next_num|int + 1) }}">Next Next &raquo; &raquo;</a></li>
+
+
+
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+                <div class="sidebar-module sidebar-module-inset">
+                    <h4>About</h4>
+                    <p>Lot of passion for dancing and programming.</p>
+                </div>
+                <div class="sidebar-module">
+                    <h4>Archives</h4>
+                    <ol class="list-unstyled">
+                        <li><a href="https://getbootstrap.com/examples/blog/#">March 2014</a></li>
+                        <li><a href="https://getbootstrap.com/examples/blog/#">February 2014</a></li>
+                        <li><a href="https://getbootstrap.com/examples/blog/#">January 2014</a></li>
+                        <li><a href="https://getbootstrap.com/examples/blog/#">December 2013</a></li>
+                        <li><a href="https://getbootstrap.com/examples/blog/#">November 2013</a></li>
+                        <li><a href="https://getbootstrap.com/examples/blog/#">October 2013</a></li>
+                        <li><a href="https://getbootstrap.com/examples/blog/#">September 2013</a></li>
+                        <li><a href="https://getbootstrap.com/examples/blog/#">August 2013</a></li>
+                        <li><a href="https://getbootstrap.com/examples/blog/#">July 2013</a></li>
+                        <li><a href="https://getbootstrap.com/examples/blog/#">June 2013</a></li>
+                        <li><a href="https://getbootstrap.com/examples/blog/#">May 2013</a></li>
+                        <li><a href="https://getbootstrap.com/examples/blog/#">April 2013</a></li>
+                    </ol>
+                </div>
+                <div class="sidebar-module">
+                    <h4>Elsewhere</h4>
+                    <ol class="list-unstyled">
+                        <li><a href="https://github.com/k-oneGene">GitHub</a></li>
+                        <li><a href="https://www.facebook.com/jinnotonik">Facebook</a></li>
+                    </ol>
+                </div>
+            </div><!-- /.blog-sidebar -->
+
+        </div>
+    </div>
+
+
 {% endblock %}

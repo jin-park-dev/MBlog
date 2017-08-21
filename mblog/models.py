@@ -81,7 +81,7 @@ class User(db.Model):
         return self.posts.order_by(Post.timestamp.desc())
 
 class Post(db.Model):
-    __searchable__ = ['body']
+    __searchable__ = ['title', 'body']
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(140))

@@ -1,5 +1,5 @@
 <div class="blog-post" xmlns="http://www.w3.org/1999/html">
-    <a href="{{ url_for('single_post', post_id=post.id) }}"><h2 class="blog-post-title">{{ post.title }}</a></h2>
+    <a href="{{ url_for('single_post', post_id=post.id) }}"><h2 class="blog-post-title">{{ post.title }} </h2></a>
     <p class="blog-post-meta">{{ momentjs(post.timestamp).format('LLLL') }} by <a href="{{ url_for('user', nickname=post.author.nickname) }}">{{ post.author.nickname }}</a></p>
 
     <img src="{{ url_for('static', filename='upload/temp_img.png') }}" class="rounded mx-auto d-block">

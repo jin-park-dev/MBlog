@@ -23,14 +23,314 @@ body {
  * Blog posts
  */
 
-.blog-post {
-    margin-bottom: 4rem;
+/*.blog-post {*/
+    /*margin-bottom: 4rem;*/
+/*}*/
+/*.blog-post-title {*/
+    /*margin-bottom: .25rem;*/
+    /*font-size: 2.5rem;*/
+/*}*/
+/*.blog-post-meta {*/
+    /*margin-bottom: 1.25rem;*/
+    /*color: #999;*/
+/*}*/
+
+
+/* My CSS */
+
+/*
+    INDEX PAGE
+*/
+
+.clearfix {zoom: 1;}
+.clearfix:after {
+    content: '.';
+    clear: both;
+    display: block;
+    height: 0;
+    visibility: hidden;
 }
-.blog-post-title {
-    margin-bottom: .25rem;
-    font-size: 2.5rem;
+
+
+/*  ------------ SEXCTION SITE INFO ----------------*/
+
+.section-site-info {
+    /*background: linear-gradient(to bottom right, #fcfcfc, #a6d5ec);*/
+    /*border-style: none;*/
+    /*background-image: linear-gradient(rgba(0, 0, 0, 0.7), #000), url(img/background01.jpg);*/
+    background-image: url("img/FreeGreatPicture.com-16923-background-color.jpg");
+    background-size: cover;
+    background-position: center;
+    /*height: 25vh;*/
+    background-attachment: fixed;
+    /*background-size: cover;*/
+    /*background-position: center;*/
+    /*height: 40vh;*/
+    /*background-attachment: fixed;*/
+    border-radius: .25rem;
 }
-.blog-post-meta {
-    margin-bottom: 1.25rem;
+
+
+
+
+
+
+
+
+
+
+
+
+/* BUTTONS */
+/* -------- BUTTONS -------- */
+.btnL:link,
+.btnL:visited {
+    display: inline-block;
+    padding: 10px 30px;
+    font-weight: 300;
+    text-decoration: none;
+    border-radius: 200px;
+}
+
+
+.btnL-full:link,
+.btnL-full:visited {
+    background-color: #7897a9;
+    border: 1px solid #7897a9;
+    color: #fff;
+    margin-right: 15px;
+}
+
+.btnL-page:link,
+.btnL-page:visited {
+    float: right;
+    background-color: #7897a9;
+    border: 0px solid #7897a9;
+    color: #fff;
+    margin-right: 15px;
+    text-align: right;
+}
+
+.btnL-ghost:link,
+.btnL-ghost:visited {
+    border: 1px solid #a6d5ec;
+    color: #a6d5ec;
+}
+
+.btnL:hover,
+.btnL:active,
+input[type=submit]:hover,
+input[type=submit]:active {
+    background-color: #a6d5ec;
+}
+
+.btnL-full:hover,
+.btnL-full:active {
+    border: 1px solid #a6d5ec;
+}
+
+.btnL-ghost:hover,
+.btnL-ghost:active {
+    border: 1px solid #a6d5ec;
+    color: #fff;
+}
+
+
+
+
+
+/* ========== BLOG HEADER? ============*/
+/*
+ * Blog name and description
+ */
+
+.blog-header {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.blog-title {
+    margin-top: 0px;
+    margin-bottom: 5px;
+    font-size: 60px;
+    font-weight: normal;
+}
+.blog-description {
+    font-size: 20px;
     color: #999;
 }
+
+
+
+
+
+/*======== Post for blog ========*/
+
+/*
+ * Blog posts
+ */
+
+.blog-post {
+    margin-bottom: 60px;
+}
+ /*!!!!!!!!!!!!!!!!STYLING A ISN' WORKING!!!!!!!!!!!!!!!!!!*/
+.blog-post-title a,
+.blog-post-title a:link,
+.blog-post-title a:active,
+.blog-post-title a {
+    color: #b60018;
+    text-decoration: none;
+}
+
+.blog-post-title a:hover {
+    color: #c6000f;
+    text-decoration:none;
+    cursor:pointer;
+}
+
+.blog-post-title p {
+    margin-bottom: 5px;
+    font-size: 40px;
+}
+
+
+.blog-post-meta {
+    margin-bottom: 20px;
+    color: #999;
+}
+
+
+.page-item:first-child {
+    margin-right: 20px;
+}
+
+
+
+
+
+/* Sidebar modules for boxing content */
+.sidebar-module {
+    padding: 15px;
+    margin: 0 -15px 15px;
+}
+.sidebar-module-inset {
+    padding: 15px;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+}
+.sidebar-module-inset p:last-child,
+.sidebar-module-inset ul:last-child,
+.sidebar-module-inset ol:last-child {
+    margin-bottom: 0;
+}
+
+
+
+/*
+ * Footer
+ */
+
+
+
+
+/*.blog-footer {*/
+    /*padding: 40px 0;*/
+    /*color: #999;*/
+    /*text-align: center;*/
+    /*background-color: #f9f9f9;*/
+    /*border-top: 1px solid #e5e5e5;*/
+/*}*/
+
+
+footer {
+    background-color: #F7F7F7;
+    padding: 14px;
+    font-size: 80%;
+
+    /*position: fixed;*/
+    bottom:0;
+    width:100%;
+    height:60px;			/* Height of the footer */
+    /*background:#6cf;*/
+
+}
+
+footer p {
+    color: #888;
+    /*text-align: right;*/
+    margin-top: 15px;
+}
+
+.footer-nav {
+    list-style: none;
+    float: left;
+}
+
+.social-links {
+    list-style: none;
+    float: right;
+}
+
+.footer-nav li,
+.social-links li {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.footer-nav li:last-child,
+.social-links li:last-child {
+    margin: 0px
+}
+
+.footer-nav li a:link,
+.footer-nav li a:visited,
+.social-links li a:link,
+.social-links li a:visited {
+    text-decoration: none;
+    border: 0px;
+    color: #888;
+    -webkit-transition: color 0.2s;
+    transition: color 0.2s;
+}
+
+.footer-nav li a:hover,
+.footer-nav li a:active {
+    color: #ddd;
+}
+
+.social-links li a:link,
+.social-links li a:active {
+    font-size: 160%;
+}
+
+.ion-social-facebook,
+.ion-social-twitter,
+.ion-social-googleplus,
+.ion-social-instagram {
+    -webkit-transition: color 0.2s;
+    transition: color 0.2s;
+}
+
+
+
+.ion-social-facebook:hover {
+    color: #3b5998;
+}
+
+.ion-social-twitter:hover {
+    color: #00b6f1;
+}
+
+.ion-social-googleplus:hover {
+    color: #df4a32;
+}
+
+.ion-social-instagram:hover {
+    color: #517fa4;
+}
+
+
+
+
+/*========== Bootstrap missing ===========*/
+
+.col-sm-offset-1 { margin-left:7.15% }
