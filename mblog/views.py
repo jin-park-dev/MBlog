@@ -7,24 +7,35 @@ from datetime import datetime
 from config import POSTS_PER_PAGE, MAX_SEARCH_RESULTS
 from .emails import follower_notification
 
-@app.route('/', methods=['GET', 'POST'])
-@app.route('/index', methods=['GET', 'POST'])
-@app.route('/index/<int:page>', methods=['GET', 'POST'])
-@login_required
-def index(page=1):
-    form = PostForm()
-    if form.validate_on_submit():
-        post = Post(body=form.post.data, timestamp=datetime.utcnow(), author=g.user)
-        db.session.add(post)
-        db.session.commit()
-        flash('Your post is now live!')
-        return redirect(url_for('index'))
-    posts = g.user.sorted_post().paginate(page, POSTS_PER_PAGE, False)
 
+
+# By default it shows MY post instead of loggin user's
+@app.route('/', methods=['GET'])
+@app.route('/index', methods=['GET'])
+@app.route('/index/<int:page>', methods=['GET'])
+def index(page=1):
+    me = g.me
+    posts = me.sorted_post().paginate(page, POSTS_PER_PAGE, False)
+    posts_latest = me.sorted_post().paginate(1, 12, False)
     return render_template('index.html',
                            title='Home',
-                           form=form,
+                           posts=posts,
+                           posts_latest=posts_latest)
+
+
+# This show logged in user's default index now.
+@app.route('/user_index', methods=['GET'])
+@app.route('/user_index/<int:page>', methods=['GET'])
+@login_required
+def user_index(page=1):
+    posts = g.user.sorted_post().paginate(page, POSTS_PER_PAGE, False)
+    return render_template('index.html',
+                           title='Home',
                            posts=posts)
+
+
+
+
 
 @lm.user_loader
 def load_user(id):
@@ -71,11 +82,19 @@ def after_login(resp):
 @app.before_request
 def before_request():
     g.user = current_user
+    g.me = User.query.filter_by(nickname='Jin').first()
     if g.user.is_authenticated:
         g.user.last_seen = datetime.utcnow()
         db.session.add(g.user)
         db.session.commit()
         g.search_form = SearchForm()
+    if g.user.is_anonymous:
+        g.search_form = SearchForm()
+
+# @app.before_first_request
+# def init_app():
+#     g.me = User.query.filter_by(nickname='Jin').first()
+#     g.search_form = SearchForm()
 
 @app.route('/logout')
 def logout():
@@ -162,7 +181,9 @@ def unfollow(nickname):
 @login_required
 def search():
     if not g.search_form.validate_on_submit():
-        return redirect(url_for('index'))
+
+        return redirect(url_for('search_results', query=g.search_form.search.data))
+        # return redirect(url_for('index'))
     return redirect(url_for('search_results', query=g.search_form.search.data))
 
 @app.route('/search_results/<query>')
@@ -187,10 +208,6 @@ def add_content():
                            title='Write a post',
                            form=form)
 
-@app.route('/post/<int:post_id>', methods=['GET'])
-def single_post(post_id):
-    post = Post.query.filter_by(id=post_id).first()
-    return render_template('single_post.html', post=post)
 
 @app.route('/edit_post/<int:post_id>', methods=['GET', 'POST'])
 @login_required
@@ -198,31 +215,19 @@ def edit_post(post_id):
     post = Post.query.filter_by(id=post_id).first()
     form = PostForm(obj=post)
 
-    """
-    if form.validate_on_submit():
-        post = Post(title=form.title.data, body=form.body.data)
-        db.session.commit()
-        return redirect(url_for('single_post', post_id=post_id))
-    """
-
     if form.validate_on_submit():
         form.populate_obj(post)
         db.session.commit()
         return redirect(url_for('single_post', post_id=post_id))
 
-    # else:
-    #     form.title.data = post.title
-    #     form.body.data = post.body
     return render_template("edit_post.html", form=form)
     # if form.validate_on_submit():
 
 
-
-
-
-
-
-
+@app.route('/post/<int:post_id>', methods=['GET'])
+def single_post(post_id):
+    post = Post.query.filter_by(id=post_id).first()
+    return render_template('single_post.html', post=post)
 
 
 
@@ -247,12 +252,6 @@ def test_ajax_rtn():
 
 """
 
-@app.route('/test/flash')
-def test_flash():
-    from random import randint
-    for i in range(3):
-        flash('Msg to test flash and random int: {}'.format(str(randint(1,50))))
-    return redirect(url_for('index'))
 
 @app.route('/test/markdown')
 def test_markdown():

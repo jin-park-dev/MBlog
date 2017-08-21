@@ -17,30 +17,14 @@
             <div class="col-sm-8">
                 <!-- posts is a Paginate object -->
                 {% for post in posts.items %}
-                    <div class="">{% include 'post.html' %}</div>
+                    {% include 're_post.html' %}
                 {% endfor %}
 
 
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination">
+                {% with target_page='index' %}
+                    {% include 're_paginate_nav.html' %}
+                {% endwith %}
 
-                        {% if posts.has_prev %}<li class="page-item"><a class="page-link" href="{{ url_for('index', page=1) }}">&laquo;&laquo;&laquo; 1st Page</a></li>
-                        {% else %}<li class="page-item disabled"><a class="page-link">&laquo; Previous</a></li>{% endif %}
-                        {% if posts.has_prev %}<li class="page-item"><a class="page-link" href="{{ url_for('index', page=posts.prev_num) }}">&laquo; Previous</a></li>
-                        {% else %}<li class="page-item disabled"><a class="page-link">&laquo; Previous</a></li>{% endif %}
-
-                        <li class="disabled page-item"><a class="page-link" href="#">{{ posts.page }} / {{ posts.pages }}</a></li>
-{#                        <li class="disabled page-item"><a class="page-link" href="#">x</a></li>#}
-
-                        {% if posts.has_next %}<li class="page-item"><a class="page-link" href="{{ url_for('index', page=posts.next_num) }}">Next &raquo;</a></li>
-                        {% else %}<li class="page-item disabled"><a class="page-link">Next &raquo;</a></li>{% endif %}
-
-                        <li class="page-item"><a class="page-link" href="{{ url_for('index', page=posts.next_num|int + 1) }}">Next Next &raquo; &raquo;</a></li>
-
-
-
-                    </ul>
-                </nav>
             </div>
 
             <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
@@ -49,23 +33,15 @@
                     <p>Lot of passion for dancing and programming.</p>
                 </div>
                 <div class="sidebar-module">
-                    <h4>Archives</h4>
+                    <h4>Latest posts</h4>
                     <ol class="list-unstyled">
-                        <li><a href="https://getbootstrap.com/examples/blog/#">March 2014</a></li>
-                        <li><a href="https://getbootstrap.com/examples/blog/#">February 2014</a></li>
-                        <li><a href="https://getbootstrap.com/examples/blog/#">January 2014</a></li>
-                        <li><a href="https://getbootstrap.com/examples/blog/#">December 2013</a></li>
-                        <li><a href="https://getbootstrap.com/examples/blog/#">November 2013</a></li>
-                        <li><a href="https://getbootstrap.com/examples/blog/#">October 2013</a></li>
-                        <li><a href="https://getbootstrap.com/examples/blog/#">September 2013</a></li>
-                        <li><a href="https://getbootstrap.com/examples/blog/#">August 2013</a></li>
-                        <li><a href="https://getbootstrap.com/examples/blog/#">July 2013</a></li>
-                        <li><a href="https://getbootstrap.com/examples/blog/#">June 2013</a></li>
-                        <li><a href="https://getbootstrap.com/examples/blog/#">May 2013</a></li>
-                        <li><a href="https://getbootstrap.com/examples/blog/#">April 2013</a></li>
+                        {% for post in posts_latest.items %}
+                            <li><a class="" href="{{ url_for('single_post', post_id=post.id) }}"> {{ post.title }}</a></li>
+                            <hr>
+                        {% endfor %}
                     </ol>
                 </div>
-                <div class="sidebar-module">
+                <div class="sidebar-module sidebar-latest-posts">
                     <h4>Elsewhere</h4>
                     <ol class="list-unstyled">
                         <li><a href="https://github.com/k-oneGene">GitHub</a></li>

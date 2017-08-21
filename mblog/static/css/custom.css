@@ -52,7 +52,7 @@ body {
 }
 
 
-/*  ------------ SEXCTION SITE INFO ----------------*/
+/*  ------------ SECTION SITE INFO ----------------*/
 
 .section-site-info {
     /*background: linear-gradient(to bottom right, #fcfcfc, #a6d5ec);*/
@@ -170,7 +170,7 @@ input[type=submit]:active {
  */
 
 .blog-post {
-    margin-bottom: 60px;
+    margin-bottom: 0px;
 }
  /*!!!!!!!!!!!!!!!!STYLING A ISN' WORKING!!!!!!!!!!!!!!!!!!*/
 .blog-post-title a,
@@ -206,7 +206,7 @@ input[type=submit]:active {
 
 
 
-
+/* Index */
 /* Sidebar modules for boxing content */
 .sidebar-module {
     padding: 15px;
@@ -222,6 +222,9 @@ input[type=submit]:active {
 .sidebar-module-inset ol:last-child {
     margin-bottom: 0;
 }
+
+
+
 
 
 

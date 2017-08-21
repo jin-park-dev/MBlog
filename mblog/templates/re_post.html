@@ -1,4 +1,4 @@
-<div class="blog-post" xmlns="http://www.w3.org/1999/html">
+<div class="blog-post">
     <a class="blog-post-title" href="{{ url_for('single_post', post_id=post.id) }}"> <p> {{ post.title }} </p> </a>
     <p class="blog-post-meta">{{ momentjs(post.timestamp).format('LLLL') }} by <a href="{{ url_for('user', nickname=post.author.nickname) }}">{{ post.author.nickname }}</a></p>
 

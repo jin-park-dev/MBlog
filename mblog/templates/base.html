@@ -13,8 +13,8 @@
     <link rel="icon" href="https://v4-alpha.getbootstrap.com/favicon.ico">
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-{#    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">#}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/starter-template.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
+{#    <link rel="stylesheet" href="{{ url_for('static', filename='css/starter-template.css') }}">#}
     <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 
     <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
@@ -40,30 +40,38 @@
                 <div class="collapse navbar-collapse" id="navbarsExampleDefault">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item active">
-                            <a class="nav-link" href="{{ url_for('index') }}">Home <span class="sr-only">(current)</span></a>
-                        </li>
-                        {% if g.user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('user', nickname=g.user.nickname) }}">Your Profile</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('add_content') }}">Add Content</a>
-                        </li>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('test_flash') }}">Test flash!</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                            <a class="nav-link" href="{{ url_for('index') }}">Home<span class="sr-only">(current)</span></a>
                         </li>
 
-                    </ul>
-                    <form class="form-inline my-2 my-md-0" action="{{ url_for('search') }}" method="post" name="search">
-                        {{ g.search_form.hidden_tag() }}
-                        {{ g.search_form.search(class="form-control mr-sm-2") }}
-                        <button class="btn btn-primary my-2 my-sm-0" type="submit" value="Search"> Search </button>
-                    </form>
+                        {% if g.user.is_anonymous %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('login') }}">Login<span class="sr-only">(current)</span></a>
+                            </li>
+
                         {% endif %}
+
+                        {% if g.user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('user', nickname=g.user.nickname) }}">Your Profile</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('add_content') }}">Add Content</a>
+                            </li>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                            </li>
+
+
+                        {% endif %}
+{#                        <li class="nav-item navbar-right">#}
+                            <form class="form-inline my-2 my-md-0 navbar-form navbar-toggler-right" action="{{ url_for('search') }}" method="post" name="search">
+                                {{ g.search_form.hidden_tag() }}
+                                {{ g.search_form.search(class="form-control mr-sm-2") }}
+                                <button class="btn btn-primary my-2 my-sm-0" value="Search"> Search </button>
+                            </form>
+{#                        </li>#}
+                    </ul>
                 </div>
             </nav>
         </div>
