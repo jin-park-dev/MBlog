@@ -1,20 +1,41 @@
 
 <nav aria-label="Page navigation">
     <ul class="pagination">
-        {% if posts.has_prev %}<li class="page-item"><a class="page-link" href="{{ url_for(target_page, page=1) }}">&laquo;&laquo;&laquo; Latest</a></li>
-        {% else %}<li class="page-item disabled"><a class="page-link">&laquo; Previous</a></li>{% endif %}
+
+{#    Previous nav#}
+        {% if posts.has_prev %}
+            <li class="page-item"><a class="page-link" href="{{ url_for(target_page, page=1) }}">&laquo;&laquo;&laquo; Latest</a></li>
+        {% else %}
+            <li class="page-item disabled"><a class="page-link">&laquo;&laquo;&laquo; Latest</a></li>
+        {% endif %}
+
+        {% if posts.page|int >= 3 %}
+            <li class="page-item"><a class="page-link" href="{{ url_for(target_page, page=posts.prev_num|int - 1) }}">&laquo; &laquo;</a></li>
+        {% elif posts.page|int == 2 %}
+            <li class="page-item"><a class="page-link" href="{{ url_for(target_page, page=1) }}">&laquo; &laquo;</a></li>
+        {% else %}
+            <li class="page-item disabled"><a class="page-link" href="{{ url_for(target_page, page=1) }}">&laquo; &laquo;</a></li>
+        {% endif %}
+
+{# Current page / Numeber of pages#}
         {% if posts.has_prev %}<li class="page-item"><a class="page-link" href="{{ url_for(target_page, page=posts.prev_num) }}">&laquo; Previous</a></li>
         {% else %}<li class="page-item disabled"><a class="page-link">&laquo; Previous</a></li>{% endif %}
 
         <li class="disabled page-item"><a class="page-link" href="#">{{ posts.page }} / {{ posts.pages }}</a></li>
-        {#                        <li class="disabled page-item"><a class="page-link" href="#">x</a></li>#}
 
+{#Next navs#}
+        {% if posts.has_next %}
+            <li class="page-item"><a class="page-link" href="{{ url_for(target_page, page=posts.next_num) }}">Next &raquo;</a></li>
+        {% else %}
+            <li class="page-item disabled"><a class="page-link">Next &raquo;</a></li>{% endif %}
 
+        {% if posts.page|int + 2 <= posts.pages|int %}
+            <li class="page-item"><a class="page-link" href="{{ url_for(target_page, page=posts.page|int + 2) }}">&raquo; &raquo;</a></li>
+        {% elif posts.page|int == posts.pages|int - 1 %}
+            <li class="page-item"><a class="page-link" href="{{ url_for(target_page, page=posts.pages) }}">&raquo; &raquo;</a></li>
+        {% else %}
+            <li class="page-item disabled"><a class="page-link" href="{{ url_for(target_page, page=posts.pages) }}">&raquo; &raquo;</a></li>
+        {% endif %}
 
-
-        {% if posts.has_next %}<li class="page-item"><a class="page-link" href="{{ url_for(target_page, page=posts.next_num) }}">Next &raquo;</a></li>
-        {% else %}<li class="page-item disabled"><a class="page-link">Next &raquo;</a></li>{% endif %}
-
-        <li class="page-item"><a class="page-link" href="{{ url_for(target_page, page=posts.next_num|int + 1) }}">Next Next &raquo; &raquo;</a></li>
     </ul>
 </nav>
