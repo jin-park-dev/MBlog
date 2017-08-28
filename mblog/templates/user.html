@@ -9,21 +9,74 @@
                 {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
                 {% if user.last_seen %}<p><em>Last seen on: {{ momentjs(user.last_seen).calendar() }}</em></p>{% endif %}
                 <p>{{ user.followers.count() }} followers |
-                {% if user.id == g.user.id %}
-                    <a href="{{ url_for('edit') }}">Edit your profile</a>
-                {% elif not g.user.is_following(user) %}
-                    <a href="{{ url_for('follow', nickname=user.nickname) }}">Follow</a>
-                {% else %}
-                    <a href="{{ url_for('unfollow', nickname=user.nickname) }}">Unfollow</a>
-                {% endif %}
+                    {% if user.id == g.user.id %}
+                        <a href="{{ url_for('edit') }}">Edit your profile</a>
+                    {% elif not g.user.is_following(user) %}
+                        <a href="{{ url_for('follow', nickname=user.nickname) }}">Follow</a>
+                    {% else %}
+                        <a href="{{ url_for('unfollow', nickname=user.nickname) }}">Unfollow</a>
+                    {% endif %}
                 </p>
             </td>
         </tr>
     </table>
     <hr>
     {% for post in posts.items %}
-        {% include 'post.html' %}
+        {% include 're_post.html' %}
     {% endfor %}
-    {% if posts.has_prev %}<a href="{{ url_for('user', nickname=user.nickname, page=posts.prev_num) }}">&lt;&lt; Newer posts</a>{% else %}&lt;&lt; Newer posts{% endif %} |
-    {% if posts.has_next %}<a href="{{ url_for('user', nickname=user.nickname, page=posts.next_num) }}">Older posts &gt;&gt;</a>{% else %}Older posts &gt;&gt;{% endif %}
+
+    {#    todo: can't figure out at no how to pass on user and make it work#}
+    {#    {% with target_page="'user', " + "nickname=" + user.nickname  %}#}
+
+    {#    {% with target_page="'user', " + "nickname=" + "'" +user.nickname + "'", posts=posts %}#}
+    {#        {% include 're_paginate_nav.html' %}#}
+    {#    {% endwith %}#}
+
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+
+            {#    Previous nav#}
+            {% if posts.has_prev %}
+                <li class="page-item"><a class="page-link" href="{{ url_for('user', nickname=user.nickname, page=1) }}">&laquo;&laquo;&laquo; Latest</a></li>
+            {% else %}
+                <li class="page-item disabled"><a class="page-link">&laquo;&laquo;&laquo; Latest</a></li>
+            {% endif %}
+
+            {% if posts.page|int >= 3 %}
+                <li class="page-item"><a class="page-link" href="{{ url_for('user', nickname=user.nickname, page=posts.prev_num|int - 1) }}">&laquo; &laquo;</a></li>
+            {% elif posts.page|int == 2 %}
+                <li class="page-item"><a class="page-link" href="{{ url_for('user', nickname=user.nickname, page=1) }}">&laquo; &laquo;</a></li>
+            {% else %}
+                <li class="page-item disabled"><a class="page-link" href="{{ url_for('user', nickname=user.nickname, page=1) }}">&laquo; &laquo;</a></li>
+            {% endif %}
+
+            {# Current page / Numeber of pages#}
+            {% if posts.has_prev %}<li class="page-item"><a class="page-link" href="{{ url_for('user', nickname=user.nickname, page=posts.prev_num) }}">&laquo; Previous</a></li>
+            {% else %}<li class="page-item disabled"><a class="page-link">&laquo; Previous</a></li>{% endif %}
+
+            <li class="disabled page-item"><a class="page-link" href="#">{{ posts.page }} / {{ posts.pages }}</a></li>
+
+            {#Next navs#}
+            {% if posts.has_next %}
+                <li class="page-item"><a class="page-link" href="{{ url_for('user', nickname=user.nickname, page=posts.next_num) }}">Next &raquo;</a></li>
+            {% else %}
+                <li class="page-item disabled"><a class="page-link">Next &raquo;</a></li>{% endif %}
+
+            {% if posts.page|int + 2 <= posts.pages|int %}
+                <li class="page-item"><a class="page-link" href="{{ url_for('user', nickname=user.nickname, page=posts.page|int + 2) }}">&raquo; &raquo;</a></li>
+            {% elif posts.page|int == posts.pages|int - 1 %}
+                <li class="page-item"><a class="page-link" href="{{ url_for('user', nickname=user.nickname, page=posts.pages) }}">&raquo; &raquo;</a></li>
+            {% else %}
+                <li class="page-item disabled"><a class="page-link" href="{{ url_for('user', nickname=user.nickname, page=posts.pages) }}">&raquo; &raquo;</a></li>
+            {% endif %}
+
+        </ul>
+    </nav>
+
+
+    {# todo: OLD WAY. Delete if other nav is good#}
+
+    {#    {% if posts.has_prev %}<a href="{{ url_for('user', nickname=user.nickname, page=posts.prev_num) }}">&lt;&lt; Newer posts</a>{% else %}&lt;&lt; Newer posts{% endif %} |#}
+    {#    {% if posts.has_next %}<a href="{{ url_for('user', nickname=user.nickname, page=posts.next_num) }}">Older posts &gt;&gt;</a>{% else %}Older posts &gt;&gt;{% endif %}#}
+
 {% endblock %}
